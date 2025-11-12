@@ -403,7 +403,7 @@
 
                     <div id="video-info" class="bg-dark-bg-secondary border border-dark-border-primary rounded-xl p-6">
                         <h3 class="text-lg font-semibold mb-4">Video Information</h3>
-                        <div class="space-y-2 text-sm">
+                        <div class="space-y-2 text-sm mb-4">
                             <div class="flex justify-between">
                                 <span class="text-dark-text-secondary">Filename:</span>
                                 <span id="info-filename" class="font-mono">-</span>
@@ -417,6 +417,9 @@
                                 <span id="info-type" class="font-mono">-</span>
                             </div>
                         </div>
+                        <button id="export-video-btn" class="w-full px-6 py-3 bg-accent-success hover:bg-green-600 text-white font-semibold rounded-lg transition-all">
+                            <i class="fas fa-download mr-2"></i>Export Video
+                        </button>
                     </div>
 
                 </div>
@@ -425,11 +428,93 @@
         </div>
     </main>
 
+    <div id="export-modal" class="hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
+        <div class="bg-dark-bg-secondary border border-dark-border-primary rounded-xl p-6 max-w-md w-full mx-4">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-xl font-semibold">Export Video</h3>
+                <button id="close-export-modal" class="text-dark-text-tertiary hover:text-dark-text-primary">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+
+            <div id="export-options">
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Format</label>
+                        <select id="export-format" class="w-full px-3 py-2 bg-dark-bg-tertiary border border-dark-border-primary text-dark-text-primary rounded-lg">
+                            <option value="mp4" selected>MP4 (H.264)</option>
+                            <option value="webm">WebM (VP9)</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Quality</label>
+                        <select id="export-quality" class="w-full px-3 py-2 bg-dark-bg-tertiary border border-dark-border-primary text-dark-text-primary rounded-lg">
+                            <option value="720p">720p (HD)</option>
+                            <option value="1080p" selected>1080p (Full HD)</option>
+                            <option value="1440p">1440p (2K)</option>
+                            <option value="4k">4K (Ultra HD)</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Encoding Speed</label>
+                        <select id="export-preset" class="w-full px-3 py-2 bg-dark-bg-tertiary border border-dark-border-primary text-dark-text-primary rounded-lg">
+                            <option value="ultrafast">Ultra Fast (Large file)</option>
+                            <option value="fast">Fast</option>
+                            <option value="medium" selected>Medium (Balanced)</option>
+                            <option value="slow">Slow (Smaller file)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="flex gap-3 mt-6">
+                    <button id="cancel-export-btn" class="flex-1 px-4 py-2 bg-dark-bg-tertiary hover:bg-dark-bg-hover text-dark-text-primary border border-dark-border-primary rounded-lg transition-all">
+                        Cancel
+                    </button>
+                    <button id="start-export-btn" class="flex-1 px-4 py-2 bg-accent-primary hover:bg-accent-hover text-white rounded-lg transition-all">
+                        <i class="fas fa-file-export mr-2"></i>Start Export
+                    </button>
+                </div>
+            </div>
+
+            <div id="export-progress" class="hidden">
+                <div class="space-y-4">
+                    <div>
+                        <div class="flex justify-between mb-2">
+                            <span class="text-sm font-medium" id="export-progress-text">Starting export...</span>
+                        </div>
+                        <div class="w-full bg-dark-bg-tertiary rounded-full h-3 overflow-hidden">
+                            <div id="export-progress-bar" class="bg-accent-primary h-full transition-all duration-300" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    <p class="text-sm text-dark-text-secondary text-center">
+                        <i class="fas fa-circle-notch fa-spin mr-2"></i>Please wait...
+                    </p>
+                </div>
+            </div>
+
+            <div id="export-complete" class="hidden">
+                <div class="space-y-4">
+                    <div class="text-center py-4">
+                        <i class="fas fa-check-circle text-6xl text-accent-success mb-4"></i>
+                        <h4 class="text-lg font-semibold mb-2">Export Complete!</h4>
+                        <p class="text-sm text-dark-text-secondary mb-1">File: <span id="export-filename" class="font-mono">-</span></p>
+                        <p class="text-sm text-dark-text-secondary">Size: <span id="export-size" class="font-mono">-</span></p>
+                    </div>
+                    <button id="download-export-btn" class="w-full px-4 py-3 bg-accent-success hover:bg-green-600 text-white font-semibold rounded-lg transition-all">
+                        <i class="fas fa-download mr-2"></i>Download Video
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <footer id="app-footer" class="bg-dark-bg-secondary border-t border-dark-border-primary mt-auto">
         <div class="container mx-auto px-6 py-4" style="width: 80%;">
             <div class="flex items-center justify-between text-sm text-dark-text-tertiary">
                 <p>&copy; 2025 AI Video Editor</p>
-                <p>Phase 6: Effects & Filters</p>
+                <p>Phase 7: Export & Polish</p>
             </div>
         </div>
     </footer>
@@ -440,6 +525,7 @@
     <script src="assets/js/subtitles.js"></script>
     <script src="assets/js/audio.js"></script>
     <script src="assets/js/effects.js"></script>
+    <script src="assets/js/export.js"></script>
     <script src="assets/js/editor.js"></script>
 
 </body>

@@ -351,4 +351,56 @@ class FFmpegService
         exec($cmd, $result, $returnCode);
         return $returnCode === 0 && file_exists($output);
     }
+
+    public function exportVideo(string $input, string $output, array $options = []): bool
+    {
+        $format = $options['format'] ?? 'mp4';
+        $quality = $options['quality'] ?? '1080p';
+        $preset = $options['preset'] ?? 'medium';
+
+        $qualityMap = [
+            '720p' => ['width' => 1280, 'height' => 720, 'bitrate' => '2500k'],
+            '1080p' => ['width' => 1920, 'height' => 1080, 'bitrate' => '5000k'],
+            '1440p' => ['width' => 2560, 'height' => 1440, 'bitrate' => '10000k'],
+            '4k' => ['width' => 3840, 'height' => 2160, 'bitrate' => '20000k']
+        ];
+
+        $q = $qualityMap[$quality] ?? $qualityMap['1080p'];
+
+        if ($format === 'webm') {
+            $cmd = sprintf(
+                '%s -i %s -vf "scale=%d:%d" -c:v libvpx-vp9 -b:v %s -c:a libopus -b:a 128k -preset %s %s 2>&1',
+                escapeshellcmd($this->ffmpegPath),
+                escapeshellarg($input),
+                $q['width'],
+                $q['height'],
+                $q['bitrate'],
+                $preset,
+                escapeshellarg($output)
+            );
+        } else {
+            $cmd = sprintf(
+                '%s -i %s -vf "scale=%d:%d" -c:v libx264 -b:v %s -c:a aac -b:a 192k -preset %s %s 2>&1',
+                escapeshellcmd($this->ffmpegPath),
+                escapeshellarg($input),
+                $q['width'],
+                $q['height'],
+                $q['bitrate'],
+                $preset,
+                escapeshellarg($output)
+            );
+        }
+
+        exec($cmd, $result, $returnCode);
+        return $returnCode === 0 && file_exists($output);
+    }
+
+    public function getExportProgress(string $input): array
+    {
+        $metadata = $this->getMetadata($input);
+        return [
+            'duration' => $metadata['duration'] ?? 0,
+            'status' => 'processing'
+        ];
+    }
 }

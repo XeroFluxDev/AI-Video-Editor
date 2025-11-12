@@ -4,10 +4,12 @@ let currentVideo = null;
 document.addEventListener('DOMContentLoaded', () => {
     initUpload();
     initThemeToggle();
+    initKeyboardShortcuts();
     AI.init();
     Subtitles.init();
     Audio.init();
     Effects.init();
+    Export.init();
 });
 
 function initUpload() {
@@ -205,4 +207,54 @@ function showNotification(message, type = 'success') {
             notification.remove();
         }
     }, 5000);
+}
+
+function initKeyboardShortcuts() {
+    document.addEventListener('keydown', (e) => {
+        const target = e.target;
+        const isInput = target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.tagName === 'SELECT';
+
+        if (isInput) return;
+
+        switch(e.code) {
+            case 'Space':
+                e.preventDefault();
+                if (player) {
+                    if (player.paused()) {
+                        player.play();
+                    } else {
+                        player.pause();
+                    }
+                }
+                break;
+            case 'ArrowLeft':
+                e.preventDefault();
+                if (player) {
+                    player.currentTime(Math.max(0, player.currentTime() - 5));
+                }
+                break;
+            case 'ArrowRight':
+                e.preventDefault();
+                if (player) {
+                    player.currentTime(Math.min(player.duration(), player.currentTime() + 5));
+                }
+                break;
+            case 'KeyM':
+                e.preventDefault();
+                if (player) {
+                    player.muted(!player.muted());
+                }
+                break;
+            case 'KeyF':
+                e.preventDefault();
+                if (player) {
+                    if (player.isFullscreen()) {
+                        player.exitFullscreen();
+                    } else {
+                        player.requestFullscreen();
+                    }
+                }
+                break;
+        }
+    });
 }

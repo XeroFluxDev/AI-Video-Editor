@@ -8,6 +8,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet">
+    <script src="https://unpkg.com/wavesurfer.js@7"></script>
 
     <script>
         tailwind.config = {
@@ -232,6 +233,64 @@
                         </div>
                     </div>
 
+                    <div id="audio-panel" class="bg-dark-bg-secondary border border-dark-border-primary rounded-xl p-6">
+                        <div class="flex items-center gap-3 mb-4">
+                            <i class="fas fa-volume-up text-accent-primary text-xl"></i>
+                            <h3 class="text-lg font-semibold">Audio Controls</h3>
+                        </div>
+
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Waveform</label>
+                                <div id="waveform" class="bg-dark-bg-tertiary rounded-lg overflow-hidden"></div>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Volume</label>
+                                <div class="flex items-center gap-3">
+                                    <button id="mute-btn" class="w-10 h-10 bg-dark-bg-tertiary hover:bg-dark-bg-hover border border-dark-border-primary rounded-lg transition-all flex items-center justify-center">
+                                        <i class="fas fa-volume-up"></i>
+                                    </button>
+                                    <input type="range" id="volume-slider" min="0" max="2" step="0.1" value="1" class="flex-1">
+                                    <span id="volume-value" class="text-sm font-mono w-12 text-right">100%</span>
+                                </div>
+                            </div>
+
+                            <div class="border-t border-dark-border-primary pt-4">
+                                <label class="block text-sm font-medium mb-2">Audio Operations</label>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <button id="remove-audio-btn" class="px-3 py-2 bg-dark-bg-tertiary hover:bg-dark-bg-hover text-dark-text-primary border border-dark-border-primary text-sm rounded-lg transition-all">
+                                        <i class="fas fa-volume-mute mr-1"></i>Remove Audio
+                                    </button>
+                                    <button id="replace-audio-btn" class="px-3 py-2 bg-dark-bg-tertiary hover:bg-dark-bg-hover text-dark-text-primary border border-dark-border-primary text-sm rounded-lg transition-all">
+                                        <i class="fas fa-exchange-alt mr-1"></i>Replace Audio
+                                    </button>
+                                    <button id="normalize-audio-btn" class="px-3 py-2 bg-accent-primary hover:bg-accent-hover text-white text-sm rounded-lg transition-all">
+                                        <i class="fas fa-adjust mr-1"></i>Normalize
+                                    </button>
+                                    <button id="remove-silence-btn" class="px-3 py-2 bg-accent-primary hover:bg-accent-hover text-white text-sm rounded-lg transition-all">
+                                        <i class="fas fa-cut mr-1"></i>Remove Silence
+                                    </button>
+                                </div>
+                                <input type="file" id="audio-input" accept="audio/*" class="hidden">
+                            </div>
+
+                            <div class="border-t border-dark-border-primary pt-4">
+                                <label class="block text-sm font-medium mb-2">Silence Removal Settings</label>
+                                <div class="grid grid-cols-2 gap-3">
+                                    <div>
+                                        <label class="block text-xs text-dark-text-secondary mb-1">Threshold (dB)</label>
+                                        <input type="number" id="silence-threshold" value="-50" min="-80" max="-20" class="w-full px-3 py-2 bg-dark-bg-tertiary border border-dark-border-primary text-dark-text-primary rounded-lg">
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs text-dark-text-secondary mb-1">Duration (sec)</label>
+                                        <input type="number" id="silence-duration" value="0.5" min="0.1" max="5" step="0.1" class="w-full px-3 py-2 bg-dark-bg-tertiary border border-dark-border-primary text-dark-text-primary rounded-lg">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div id="video-info" class="bg-dark-bg-secondary border border-dark-border-primary rounded-xl p-6">
                         <h3 class="text-lg font-semibold mb-4">Video Information</h3>
                         <div class="space-y-2 text-sm">
@@ -260,7 +319,7 @@
         <div class="container mx-auto px-6 py-4" style="width: 80%;">
             <div class="flex items-center justify-between text-sm text-dark-text-tertiary">
                 <p>&copy; 2025 AI Video Editor</p>
-                <p>Phase 4: Subtitles</p>
+                <p>Phase 5: Audio Operations</p>
             </div>
         </div>
     </footer>
@@ -269,6 +328,7 @@
     <script src="assets/js/timeline.js"></script>
     <script src="assets/js/ai.js"></script>
     <script src="assets/js/subtitles.js"></script>
+    <script src="assets/js/audio.js"></script>
     <script src="assets/js/editor.js"></script>
 
 </body>

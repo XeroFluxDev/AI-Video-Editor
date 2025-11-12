@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initThemeToggle();
     AI.init();
     Subtitles.init();
+    Audio.init();
 });
 
 function initUpload() {

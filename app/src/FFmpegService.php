@@ -136,4 +136,90 @@ class FFmpegService
         }
         return (float)$fps;
     }
+
+    public function removeAudio(string $input, string $output): bool
+    {
+        $cmd = sprintf(
+            '%s -i %s -an -c:v copy %s 2>&1',
+            escapeshellcmd($this->ffmpegPath),
+            escapeshellarg($input),
+            escapeshellarg($output)
+        );
+
+        exec($cmd, $result, $returnCode);
+        return $returnCode === 0 && file_exists($output);
+    }
+
+    public function replaceAudio(string $videoInput, string $audioInput, string $output): bool
+    {
+        $cmd = sprintf(
+            '%s -i %s -i %s -c:v copy -c:a aac -map 0:v:0 -map 1:a:0 %s 2>&1',
+            escapeshellcmd($this->ffmpegPath),
+            escapeshellarg($videoInput),
+            escapeshellarg($audioInput),
+            escapeshellarg($output)
+        );
+
+        exec($cmd, $result, $returnCode);
+        return $returnCode === 0 && file_exists($output);
+    }
+
+    public function adjustVolume(string $input, string $output, float $volume): bool
+    {
+        $cmd = sprintf(
+            '%s -i %s -af "volume=%.2f" -c:v copy %s 2>&1',
+            escapeshellcmd($this->ffmpegPath),
+            escapeshellarg($input),
+            $volume,
+            escapeshellarg($output)
+        );
+
+        exec($cmd, $result, $returnCode);
+        return $returnCode === 0 && file_exists($output);
+    }
+
+    public function normalizeAudio(string $input, string $output): bool
+    {
+        $cmd = sprintf(
+            '%s -i %s -af "loudnorm=I=-16:TP=-1.5:LRA=11" -c:v copy %s 2>&1',
+            escapeshellcmd($this->ffmpegPath),
+            escapeshellarg($input),
+            escapeshellarg($output)
+        );
+
+        exec($cmd, $result, $returnCode);
+        return $returnCode === 0 && file_exists($output);
+    }
+
+    public function removeSilence(string $input, string $output, float $threshold = -50, float $duration = 0.5): bool
+    {
+        $cmd = sprintf(
+            '%s -i %s -af "silenceremove=stop_periods=-1:stop_duration=%.2f:stop_threshold=%ddB" -c:v copy %s 2>&1',
+            escapeshellcmd($this->ffmpegPath),
+            escapeshellarg($input),
+            $duration,
+            (int)$threshold,
+            escapeshellarg($output)
+        );
+
+        exec($cmd, $result, $returnCode);
+        return $returnCode === 0 && file_exists($output);
+    }
+
+    public function extractAudioWaveform(string $input): ?array
+    {
+        $cmd = sprintf(
+            '%s -i %s -filter_complex "aformat=channel_layouts=mono,compand,showwavespic=s=1920x200" -frames:v 1 -f image2pipe -vcodec png - 2>&1',
+            escapeshellcmd($this->ffmpegPath),
+            escapeshellarg($input)
+        );
+
+        exec($cmd, $output, $returnCode);
+
+        if ($returnCode === 0 && !empty($output)) {
+            return ['data' => base64_encode(implode('', $output))];
+        }
+
+        return null;
+    }
 }

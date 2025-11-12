@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     AI.init();
     Subtitles.init();
     Audio.init();
+    Effects.init();
 });
 
 function initUpload() {

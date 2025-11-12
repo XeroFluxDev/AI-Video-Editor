@@ -291,6 +291,116 @@
                         </div>
                     </div>
 
+                    <div id="effects-panel" class="bg-dark-bg-secondary border border-dark-border-primary rounded-xl p-6">
+                        <div class="flex items-center gap-3 mb-4">
+                            <i class="fas fa-magic text-accent-primary text-xl"></i>
+                            <h3 class="text-lg font-semibold">Effects & Filters</h3>
+                        </div>
+
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Text Overlay</label>
+                                <input type="text" id="text-overlay-input" placeholder="Enter text to overlay..." class="w-full px-3 py-2 bg-dark-bg-tertiary border border-dark-border-primary text-dark-text-primary rounded-lg mb-2">
+                                <div class="grid grid-cols-3 gap-2 mb-2">
+                                    <select id="text-position" class="px-3 py-2 bg-dark-bg-tertiary border border-dark-border-primary text-dark-text-primary rounded-lg text-sm">
+                                        <option value="top">Top</option>
+                                        <option value="center">Center</option>
+                                        <option value="bottom" selected>Bottom</option>
+                                    </select>
+                                    <input type="number" id="text-size" value="24" min="12" max="72" placeholder="Size" class="px-3 py-2 bg-dark-bg-tertiary border border-dark-border-primary text-dark-text-primary rounded-lg text-sm">
+                                    <select id="text-color" class="px-3 py-2 bg-dark-bg-tertiary border border-dark-border-primary text-dark-text-primary rounded-lg text-sm">
+                                        <option value="white">White</option>
+                                        <option value="black">Black</option>
+                                        <option value="yellow">Yellow</option>
+                                        <option value="red">Red</option>
+                                    </select>
+                                </div>
+                                <button id="add-text-btn" class="px-4 py-2 bg-accent-primary hover:bg-accent-hover text-white rounded-lg transition-all w-full text-sm">
+                                    <i class="fas fa-plus mr-1"></i>Add Text
+                                </button>
+                            </div>
+
+                            <div class="border-t border-dark-border-primary pt-4">
+                                <label class="block text-sm font-medium mb-2">Watermark</label>
+                                <div class="grid grid-cols-2 gap-2 mb-2">
+                                    <select id="watermark-position" class="px-3 py-2 bg-dark-bg-tertiary border border-dark-border-primary text-dark-text-primary rounded-lg text-sm">
+                                        <option value="top-left">Top Left</option>
+                                        <option value="top-right">Top Right</option>
+                                        <option value="bottom-left">Bottom Left</option>
+                                        <option value="bottom-right" selected>Bottom Right</option>
+                                        <option value="center">Center</option>
+                                    </select>
+                                    <button id="add-watermark-btn" class="px-3 py-2 bg-accent-primary hover:bg-accent-hover text-white rounded-lg transition-all text-sm">
+                                        <i class="fas fa-image mr-1"></i>Add Watermark
+                                    </button>
+                                </div>
+                                <input type="file" id="watermark-input" accept="image/*" class="hidden">
+                            </div>
+
+                            <div class="border-t border-dark-border-primary pt-4">
+                                <label class="block text-sm font-medium mb-2">Speed</label>
+                                <div class="flex items-center gap-3 mb-2">
+                                    <span class="text-sm text-dark-text-secondary w-12">0.5x</span>
+                                    <input type="range" id="speed-slider" min="0.5" max="4" step="0.1" value="1" class="flex-1">
+                                    <span id="speed-value" class="text-sm font-mono w-12 text-right">1.0x</span>
+                                </div>
+                                <button id="apply-speed-btn" class="px-4 py-2 bg-accent-primary hover:bg-accent-hover text-white rounded-lg transition-all w-full text-sm">
+                                    <i class="fas fa-tachometer-alt mr-1"></i>Apply Speed
+                                </button>
+                            </div>
+
+                            <div class="border-t border-dark-border-primary pt-4">
+                                <label class="block text-sm font-medium mb-2">Resolution</label>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <select id="resolution-select" class="px-3 py-2 bg-dark-bg-tertiary border border-dark-border-primary text-dark-text-primary rounded-lg text-sm">
+                                        <option value="1280x720">720p (HD)</option>
+                                        <option value="1920x1080" selected>1080p (Full HD)</option>
+                                        <option value="2560x1440">1440p (2K)</option>
+                                        <option value="3840x2160">2160p (4K)</option>
+                                    </select>
+                                    <button id="apply-resolution-btn" class="px-3 py-2 bg-accent-primary hover:bg-accent-hover text-white rounded-lg transition-all text-sm">
+                                        <i class="fas fa-expand mr-1"></i>Apply
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="border-t border-dark-border-primary pt-4">
+                                <label class="block text-sm font-medium mb-2">Color Filters</label>
+                                <div class="space-y-3">
+                                    <div>
+                                        <div class="flex justify-between mb-1">
+                                            <label class="text-xs text-dark-text-secondary">Brightness</label>
+                                            <span id="brightness-value" class="text-xs font-mono">0</span>
+                                        </div>
+                                        <input type="range" id="brightness-slider" min="-0.5" max="0.5" step="0.05" value="0" class="w-full">
+                                    </div>
+                                    <div>
+                                        <div class="flex justify-between mb-1">
+                                            <label class="text-xs text-dark-text-secondary">Contrast</label>
+                                            <span id="contrast-value" class="text-xs font-mono">1</span>
+                                        </div>
+                                        <input type="range" id="contrast-slider" min="0.5" max="2" step="0.1" value="1" class="w-full">
+                                    </div>
+                                    <div>
+                                        <div class="flex justify-between mb-1">
+                                            <label class="text-xs text-dark-text-secondary">Saturation</label>
+                                            <span id="saturation-value" class="text-xs font-mono">1</span>
+                                        </div>
+                                        <input type="range" id="saturation-slider" min="0" max="3" step="0.1" value="1" class="w-full">
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-2 gap-2 mt-3">
+                                    <button id="reset-filters-btn" class="px-3 py-2 bg-dark-bg-tertiary hover:bg-dark-bg-hover text-dark-text-primary border border-dark-border-primary text-sm rounded-lg transition-all">
+                                        <i class="fas fa-undo mr-1"></i>Reset
+                                    </button>
+                                    <button id="apply-filters-btn" class="px-3 py-2 bg-accent-primary hover:bg-accent-hover text-white text-sm rounded-lg transition-all">
+                                        <i class="fas fa-check mr-1"></i>Apply
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div id="video-info" class="bg-dark-bg-secondary border border-dark-border-primary rounded-xl p-6">
                         <h3 class="text-lg font-semibold mb-4">Video Information</h3>
                         <div class="space-y-2 text-sm">
@@ -319,7 +429,7 @@
         <div class="container mx-auto px-6 py-4" style="width: 80%;">
             <div class="flex items-center justify-between text-sm text-dark-text-tertiary">
                 <p>&copy; 2025 AI Video Editor</p>
-                <p>Phase 5: Audio Operations</p>
+                <p>Phase 6: Effects & Filters</p>
             </div>
         </div>
     </footer>
@@ -329,6 +439,7 @@
     <script src="assets/js/ai.js"></script>
     <script src="assets/js/subtitles.js"></script>
     <script src="assets/js/audio.js"></script>
+    <script src="assets/js/effects.js"></script>
     <script src="assets/js/editor.js"></script>
 
 </body>

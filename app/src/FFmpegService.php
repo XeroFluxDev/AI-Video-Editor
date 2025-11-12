@@ -222,4 +222,133 @@ class FFmpegService
 
         return null;
     }
+
+    public function addTextOverlay(string $input, string $output, string $text, array $options = []): bool
+    {
+        $x = $options['x'] ?? '(w-text_w)/2';
+        $y = $options['y'] ?? 'h-th-50';
+        $fontSize = $options['fontSize'] ?? 24;
+        $fontColor = $options['fontColor'] ?? 'white';
+        $boxColor = $options['boxColor'] ?? 'black@0.5';
+
+        $text = addslashes($text);
+
+        $cmd = sprintf(
+            '%s -i %s -vf "drawtext=text=\'%s\':x=%s:y=%s:fontsize=%d:fontcolor=%s:box=1:boxcolor=%s" -c:a copy %s 2>&1',
+            escapeshellcmd($this->ffmpegPath),
+            escapeshellarg($input),
+            $text,
+            $x,
+            $y,
+            $fontSize,
+            $fontColor,
+            $boxColor,
+            escapeshellarg($output)
+        );
+
+        exec($cmd, $result, $returnCode);
+        return $returnCode === 0 && file_exists($output);
+    }
+
+    public function addWatermark(string $videoInput, string $watermarkInput, string $output, array $options = []): bool
+    {
+        $position = $options['position'] ?? 'bottom-right';
+        $margin = $options['margin'] ?? 10;
+
+        $overlayPos = match($position) {
+            'top-left' => sprintf('x=%d:y=%d', $margin, $margin),
+            'top-right' => sprintf('x=W-w-%d:y=%d', $margin, $margin),
+            'bottom-left' => sprintf('x=%d:y=H-h-%d', $margin, $margin),
+            'bottom-right' => sprintf('x=W-w-%d:y=H-h-%d', $margin, $margin),
+            'center' => 'x=(W-w)/2:y=(H-h)/2',
+            default => sprintf('x=W-w-%d:y=H-h-%d', $margin, $margin)
+        };
+
+        $cmd = sprintf(
+            '%s -i %s -i %s -filter_complex "overlay=%s" -c:a copy %s 2>&1',
+            escapeshellcmd($this->ffmpegPath),
+            escapeshellarg($videoInput),
+            escapeshellarg($watermarkInput),
+            $overlayPos,
+            escapeshellarg($output)
+        );
+
+        exec($cmd, $result, $returnCode);
+        return $returnCode === 0 && file_exists($output);
+    }
+
+    public function adjustSpeed(string $input, string $output, float $speed): bool
+    {
+        $videoSpeed = 1 / $speed;
+        $audioSpeed = $speed;
+
+        $cmd = sprintf(
+            '%s -i %s -filter_complex "[0:v]setpts=%.2f*PTS[v];[0:a]atempo=%.2f[a]" -map "[v]" -map "[a]" %s 2>&1',
+            escapeshellcmd($this->ffmpegPath),
+            escapeshellarg($input),
+            $videoSpeed,
+            $audioSpeed,
+            escapeshellarg($output)
+        );
+
+        exec($cmd, $result, $returnCode);
+        return $returnCode === 0 && file_exists($output);
+    }
+
+    public function changeResolution(string $input, string $output, int $width, int $height): bool
+    {
+        $cmd = sprintf(
+            '%s -i %s -vf "scale=%d:%d" -c:a copy %s 2>&1',
+            escapeshellcmd($this->ffmpegPath),
+            escapeshellarg($input),
+            $width,
+            $height,
+            escapeshellarg($output)
+        );
+
+        exec($cmd, $result, $returnCode);
+        return $returnCode === 0 && file_exists($output);
+    }
+
+    public function applyFilters(string $input, string $output, array $filters): bool
+    {
+        $filterChain = [];
+
+        if (isset($filters['brightness'])) {
+            $brightness = $filters['brightness'];
+            $filterChain[] = sprintf('eq=brightness=%.2f', $brightness);
+        }
+
+        if (isset($filters['contrast'])) {
+            $contrast = $filters['contrast'];
+            $filterChain[] = sprintf('eq=contrast=%.2f', $contrast);
+        }
+
+        if (isset($filters['saturation'])) {
+            $saturation = $filters['saturation'];
+            $filterChain[] = sprintf('eq=saturation=%.2f', $saturation);
+        }
+
+        if (isset($filters['gamma'])) {
+            $gamma = $filters['gamma'];
+            $filterChain[] = sprintf('eq=gamma=%.2f', $gamma);
+        }
+
+        if (empty($filterChain)) {
+            return copy($input, $output);
+        }
+
+        $filterString = implode(',', $filterChain);
+
+        $cmd = sprintf(
+            '%s -i %s -vf "%s" -c:a copy %s 2>&1',
+            escapeshellcmd($this->ffmpegPath),
+            escapeshellarg($input),
+            $filterString,
+            escapeshellarg($output)
+        );
+
+        exec($cmd, $result, $returnCode);
+        return $returnCode === 0 && file_exists($output);
+    }
 }

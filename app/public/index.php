@@ -164,6 +164,74 @@
                         </div>
                     </div>
 
+                    <div id="subtitle-panel" class="bg-dark-bg-secondary border border-dark-border-primary rounded-xl p-6">
+                        <div class="flex items-center gap-3 mb-4">
+                            <i class="fas fa-closed-captioning text-accent-primary text-xl"></i>
+                            <h3 class="text-lg font-semibold">Subtitles</h3>
+                        </div>
+
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Language</label>
+                                <select id="subtitle-language" class="w-full px-3 py-2 bg-dark-bg-tertiary border border-dark-border-primary text-dark-text-primary rounded-lg">
+                                    <option value="en">English</option>
+                                    <option value="es">Spanish</option>
+                                    <option value="fr">French</option>
+                                    <option value="de">German</option>
+                                    <option value="it">Italian</option>
+                                    <option value="pt">Portuguese</option>
+                                    <option value="zh">Chinese</option>
+                                    <option value="ja">Japanese</option>
+                                </select>
+                            </div>
+
+                            <button id="generate-subtitles-btn" class="px-4 py-2 bg-accent-primary hover:bg-accent-hover text-white rounded-lg transition-all w-full">
+                                <i class="fas fa-magic mr-2"></i>Generate Subtitles
+                            </button>
+
+                            <div id="subtitle-loading" class="hidden border-t border-dark-border-primary pt-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="animate-spin h-5 w-5 border-2 border-accent-primary border-t-transparent rounded-full"></div>
+                                    <span class="text-sm text-dark-text-secondary">Generating subtitles...</span>
+                                </div>
+                            </div>
+
+                            <div id="subtitle-options" class="hidden border-t border-dark-border-primary pt-4">
+                                <h4 class="text-sm font-semibold mb-3">Subtitle Options</h4>
+
+                                <div class="space-y-3">
+                                    <div>
+                                        <label class="block text-xs text-dark-text-secondary mb-1">Font Size</label>
+                                        <input type="number" id="subtitle-fontsize" value="24" min="12" max="48" class="w-full px-3 py-2 bg-dark-bg-tertiary border border-dark-border-primary text-dark-text-primary rounded-lg">
+                                    </div>
+
+                                    <div>
+                                        <label class="block text-xs text-dark-text-secondary mb-1">Font Color</label>
+                                        <select id="subtitle-color" class="w-full px-3 py-2 bg-dark-bg-tertiary border border-dark-border-primary text-dark-text-primary rounded-lg">
+                                            <option value="white">White</option>
+                                            <option value="yellow">Yellow</option>
+                                            <option value="black">Black</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="grid grid-cols-2 gap-2">
+                                        <button id="burn-subtitles-btn" class="px-3 py-2 bg-accent-warning hover:bg-yellow-600 text-white text-sm rounded-lg transition-all">
+                                            <i class="fas fa-fire mr-1"></i>Burn In
+                                        </button>
+                                        <button id="embed-subtitles-btn" class="px-3 py-2 bg-dark-bg-tertiary hover:bg-dark-bg-hover text-dark-text-primary border border-dark-border-primary text-sm rounded-lg transition-all">
+                                            <i class="fas fa-layer-group mr-1"></i>Embed
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div id="subtitle-preview" class="mt-4 p-3 bg-dark-bg-tertiary rounded-lg max-h-48 overflow-y-auto">
+                                    <p class="text-xs text-dark-text-secondary mb-2">Preview (first 5 segments):</p>
+                                    <div id="subtitle-preview-content" class="text-xs space-y-2"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div id="video-info" class="bg-dark-bg-secondary border border-dark-border-primary rounded-xl p-6">
                         <h3 class="text-lg font-semibold mb-4">Video Information</h3>
                         <div class="space-y-2 text-sm">
@@ -192,7 +260,7 @@
         <div class="container mx-auto px-6 py-4" style="width: 80%;">
             <div class="flex items-center justify-between text-sm text-dark-text-tertiary">
                 <p>&copy; 2025 AI Video Editor</p>
-                <p>Phase 3: AI Integration</p>
+                <p>Phase 4: Subtitles</p>
             </div>
         </div>
     </footer>
@@ -200,6 +268,7 @@
     <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
     <script src="assets/js/timeline.js"></script>
     <script src="assets/js/ai.js"></script>
+    <script src="assets/js/subtitles.js"></script>
     <script src="assets/js/editor.js"></script>
 
 </body>

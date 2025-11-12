@@ -1,5 +1,8 @@
 <?php
 header('Content-Type: application/json');
+header('X-Content-Type-Options: nosniff');
+header('X-Frame-Options: DENY');
+header('X-XSS-Protection: 1; mode=block');
 
 $config = require __DIR__ . '/../../config/app.php';
 

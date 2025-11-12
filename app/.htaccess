@@ -1,0 +1,12 @@
+RewriteEngine On
+
+# Increase upload limits
+php_value upload_max_filesize 2048M
+php_value post_max_size 2048M
+php_value max_execution_time 3600
+php_value max_input_time 3600
+php_value memory_limit 512M
+
+# Set document root to public folder
+RewriteCond %{REQUEST_URI} !^/public/
+RewriteRule ^(.*)$ /public/$1 [L]

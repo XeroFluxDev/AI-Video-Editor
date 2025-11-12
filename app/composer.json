@@ -1,0 +1,14 @@
+{
+    "name": "xeroflux/ai-video-editor",
+    "description": "AI-powered video editing tool",
+    "type": "project",
+    "require": {
+        "php": ">=8.1",
+        "php-ffmpeg/php-ffmpeg": "^1.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    }
+}

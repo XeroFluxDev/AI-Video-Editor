@@ -72,15 +72,60 @@
                         </video>
                     </div>
 
-                    <div id="controls-panel" class="bg-dark-bg-secondary border border-dark-border-primary rounded-xl p-6">
-                        <h3 class="text-lg font-semibold mb-4">Video Controls</h3>
-                        <div class="flex gap-3">
-                            <button id="play-btn" class="px-4 py-2 bg-accent-primary hover:bg-accent-hover text-white rounded-lg transition-all">
-                                <i class="fas fa-play mr-2"></i>Play
-                            </button>
-                            <button id="pause-btn" class="px-4 py-2 bg-dark-bg-tertiary hover:bg-dark-bg-hover text-dark-text-primary border border-dark-border-primary rounded-lg transition-all">
-                                <i class="fas fa-pause mr-2"></i>Pause
-                            </button>
+                    <div id="timeline-container" class="bg-dark-bg-secondary border border-dark-border-primary rounded-xl p-4">
+                        <h3 class="text-lg font-semibold mb-4">Timeline</h3>
+                        <div id="timeline" class="relative h-20 bg-dark-bg-tertiary rounded-lg overflow-hidden mb-4">
+                            <div id="playhead" class="absolute top-0 w-0.5 h-full bg-accent-error z-10" style="left: 0%">
+                                <div class="absolute -top-1 -left-1.5 w-3 h-3 bg-accent-error rounded-full"></div>
+                            </div>
+                            <div id="timeline-track" class="absolute top-0 left-0 w-full h-full"></div>
+                        </div>
+                        <div class="flex items-center justify-between text-xs text-dark-text-secondary">
+                            <span id="timeline-start">00:00</span>
+                            <span id="timeline-current" class="font-mono font-semibold text-dark-text-primary">00:00</span>
+                            <span id="timeline-end">00:00</span>
+                        </div>
+                    </div>
+
+                    <div id="editing-panel" class="bg-dark-bg-secondary border border-dark-border-primary rounded-xl p-6">
+                        <h3 class="text-lg font-semibold mb-4">Editing Tools</h3>
+
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Trim Video</label>
+                                <div class="grid grid-cols-2 gap-3">
+                                    <div>
+                                        <label class="block text-xs text-dark-text-secondary mb-1">Start Time (seconds)</label>
+                                        <input type="number" id="trim-start" step="0.1" min="0" value="0" class="w-full px-3 py-2 bg-dark-bg-tertiary border border-dark-border-primary text-dark-text-primary rounded-lg">
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs text-dark-text-secondary mb-1">End Time (seconds)</label>
+                                        <input type="number" id="trim-end" step="0.1" min="0" value="0" class="w-full px-3 py-2 bg-dark-bg-tertiary border border-dark-border-primary text-dark-text-primary rounded-lg">
+                                    </div>
+                                </div>
+                                <button id="trim-btn" class="mt-3 px-4 py-2 bg-accent-primary hover:bg-accent-hover text-white rounded-lg transition-all w-full">
+                                    <i class="fas fa-cut mr-2"></i>Apply Trim
+                                </button>
+                            </div>
+
+                            <div class="border-t border-dark-border-primary pt-4">
+                                <label class="block text-sm font-medium mb-2">Quick Actions</label>
+                                <div class="flex gap-3">
+                                    <button id="mark-in-btn" class="px-4 py-2 bg-dark-bg-tertiary hover:bg-dark-bg-hover text-dark-text-primary border border-dark-border-primary rounded-lg transition-all flex-1">
+                                        <i class="fas fa-flag mr-2"></i>Mark In
+                                    </button>
+                                    <button id="mark-out-btn" class="px-4 py-2 bg-dark-bg-tertiary hover:bg-dark-bg-hover text-dark-text-primary border border-dark-border-primary rounded-lg transition-all flex-1">
+                                        <i class="fas fa-flag-checkered mr-2"></i>Mark Out
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div id="processing-status" class="hidden border-t border-dark-border-primary pt-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="animate-spin h-5 w-5 border-2 border-accent-primary border-t-transparent rounded-full"></div>
+                                    <span class="text-sm text-dark-text-secondary">Processing video...</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -112,12 +157,13 @@
         <div class="container mx-auto px-6 py-4" style="width: 80%;">
             <div class="flex items-center justify-between text-sm text-dark-text-tertiary">
                 <p>&copy; 2025 AI Video Editor</p>
-                <p>Phase 1: Foundation</p>
+                <p>Phase 2: Basic Editing</p>
             </div>
         </div>
     </footer>
 
     <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
+    <script src="assets/js/timeline.js"></script>
     <script src="assets/js/editor.js"></script>
 
 </body>

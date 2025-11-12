@@ -88,7 +88,11 @@ function loadVideo(videoData) {
     document.getElementById('info-size').textContent = (videoData.size / 1024 / 1024).toFixed(2) + ' MB';
     document.getElementById('info-type').textContent = videoData.type;
 
-    initControls();
+    player.ready(() => {
+        Timeline.init(player);
+        initControls();
+        initEditingTools();
+    });
 }
 
 function initControls() {
@@ -110,6 +114,70 @@ function initThemeToggle() {
             ? 'fas fa-moon'
             : 'fas fa-sun';
     });
+}
+
+function initEditingTools() {
+    document.getElementById('trim-btn').addEventListener('click', handleTrim);
+    document.getElementById('mark-in-btn').addEventListener('click', () => {
+        const time = Timeline.getCurrentTime();
+        document.getElementById('trim-start').value = time.toFixed(1);
+        showNotification(`Mark In set at ${Timeline.formatTime(time)}`, 'success');
+    });
+    document.getElementById('mark-out-btn').addEventListener('click', () => {
+        const time = Timeline.getCurrentTime();
+        document.getElementById('trim-end').value = time.toFixed(1);
+        showNotification(`Mark Out set at ${Timeline.formatTime(time)}`, 'success');
+    });
+}
+
+async function handleTrim() {
+    const start = parseFloat(document.getElementById('trim-start').value);
+    const end = parseFloat(document.getElementById('trim-end').value);
+    const duration = end - start;
+
+    if (start < 0 || end <= start || end > Timeline.getDuration()) {
+        showNotification('Invalid trim values', 'error');
+        return;
+    }
+
+    showProcessing(true);
+    showNotification('Processing trim...', 'success');
+
+    try {
+        const response = await fetch('../api/video/process.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                operation: 'trim',
+                filename: currentVideo.filename,
+                start: start,
+                duration: duration
+            })
+        });
+
+        const data = await response.json();
+        showProcessing(false);
+
+        if (data.success) {
+            showNotification('Trim complete!', 'success');
+            currentVideo.filename = data.filename;
+            loadVideo({ ...currentVideo, filename: data.filename, type: 'video/mp4' });
+        } else {
+            showNotification(data.error || 'Trim failed', 'error');
+        }
+    } catch (error) {
+        showProcessing(false);
+        showNotification('Trim error: ' + error.message, 'error');
+    }
+}
+
+function showProcessing(show) {
+    const status = document.getElementById('processing-status');
+    if (show) {
+        status.classList.remove('hidden');
+    } else {
+        status.classList.add('hidden');
+    }
 }
 
 function showNotification(message, type = 'success') {

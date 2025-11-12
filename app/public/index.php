@@ -129,6 +129,41 @@
                         </div>
                     </div>
 
+                    <div id="ai-panel" class="bg-dark-bg-secondary border border-dark-border-primary rounded-xl p-6">
+                        <div class="flex items-center gap-3 mb-4">
+                            <i class="fas fa-robot text-accent-primary text-xl"></i>
+                            <h3 class="text-lg font-semibold">AI Assistant</h3>
+                        </div>
+
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Ask AI for editing suggestions</label>
+                                <textarea
+                                    id="ai-prompt"
+                                    rows="3"
+                                    placeholder="e.g., Make this video more engaging for social media, remove boring parts, suggest where to add transitions..."
+                                    class="w-full px-3 py-2 bg-dark-bg-tertiary border border-dark-border-primary text-dark-text-primary rounded-lg resize-none"
+                                ></textarea>
+                            </div>
+
+                            <button id="ask-ai-btn" class="px-4 py-2 bg-accent-primary hover:bg-accent-hover text-white rounded-lg transition-all w-full">
+                                <i class="fas fa-sparkles mr-2"></i>Get AI Suggestions
+                            </button>
+
+                            <div id="ai-loading" class="hidden border-t border-dark-border-primary pt-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="animate-spin h-5 w-5 border-2 border-accent-primary border-t-transparent rounded-full"></div>
+                                    <span class="text-sm text-dark-text-secondary">AI is analyzing your video...</span>
+                                </div>
+                            </div>
+
+                            <div id="ai-suggestions" class="hidden border-t border-dark-border-primary pt-4">
+                                <h4 class="text-sm font-semibold mb-3">AI Suggestions</h4>
+                                <div id="suggestions-list" class="space-y-3"></div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div id="video-info" class="bg-dark-bg-secondary border border-dark-border-primary rounded-xl p-6">
                         <h3 class="text-lg font-semibold mb-4">Video Information</h3>
                         <div class="space-y-2 text-sm">
@@ -157,13 +192,14 @@
         <div class="container mx-auto px-6 py-4" style="width: 80%;">
             <div class="flex items-center justify-between text-sm text-dark-text-tertiary">
                 <p>&copy; 2025 AI Video Editor</p>
-                <p>Phase 2: Basic Editing</p>
+                <p>Phase 3: AI Integration</p>
             </div>
         </div>
     </footer>
 
     <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
     <script src="assets/js/timeline.js"></script>
+    <script src="assets/js/ai.js"></script>
     <script src="assets/js/editor.js"></script>
 
 </body>

@@ -4,6 +4,7 @@ let currentVideo = null;
 document.addEventListener('DOMContentLoaded', () => {
     initUpload();
     initThemeToggle();
+    AI.init();
 });
 
 function initUpload() {
